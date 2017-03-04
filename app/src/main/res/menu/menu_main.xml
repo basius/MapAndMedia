@@ -2,6 +2,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.basius.mapandmedia.MainActivity">
+    <item android:id="@+id/galeria"
+        android:title="galeria"
+        app:showAsAction="never|always"
+        android:icon="@android:drawable/ic_menu_gallery" />
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
@@ -10,11 +14,11 @@
         android:icon="@android:drawable/ic_input_add" />
     <item
         android:title="Video"
-        android:showAsAction="never|always"
+        app:showAsAction="never|always"
         android:icon="@android:drawable/presence_video_online"
         android:id="@+id/video" />
     <item android:title="Camera"
-        android:showAsAction="never|always"
+        app:showAsAction="never|always"
         android:icon="@android:drawable/ic_menu_camera"
         android:id="@+id/camera" />
 </menu>
