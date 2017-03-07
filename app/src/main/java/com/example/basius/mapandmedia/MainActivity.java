@@ -1,27 +1,30 @@
 package com.example.basius.mapandmedia;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
+    private File f;
+    static final int REQUEST_TAKE_PHOTO = 1;
+    private StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
+    //private
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,11 +54,27 @@ public class MainActivity extends AppCompatActivity {
             dispatchTakePictureIntent();
         }else if(id == R.id.video){
             dispatchTakeVideoIntent();
+        }else if(id == R.id.galeria){
+
         }
         return super.onOptionsItemSelected(item);
     }
 
-    static final int REQUEST_TAKE_PHOTO = 1;
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_TAKE_PHOTO){
+            if(resultCode == RESULT_OK){
+                // executem l'insert
+                String lat = null;
+                String lon = null;
+                Media media = new Media(mStorageRef.getName(), (requestCode == REQUEST_TAKE_PHOTO ? "photo" : "video"), f.getAbsolutePath(), lat, lon);
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                ref.push().setValue(media);
+            }
+        }
+    }
+
     public void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
@@ -73,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
                         Uri.fromFile(photoFile));
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+                f = photoFile;
             }
         }
     }

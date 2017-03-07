@@ -1,36 +1,21 @@
 package com.example.basius.mapandmedia;
 
-import android.content.Context;
-import android.content.Intent;
-import android.location.LocationManager;
-import android.net.Uri;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-
 import org.osmdroid.api.IMapController;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
-import org.osmdroid.views.overlay.MinimapOverlay;
 import org.osmdroid.views.overlay.ScaleBarOverlay;
 import org.osmdroid.views.overlay.compass.CompassOverlay;
 import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
-
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -54,26 +39,6 @@ public class MainActivityFragment extends Fragment{
         setZoom();
         setOverlays();
         map.invalidate();
-
-       // galeria = (Button) view.findViewById(R.id.galeria);
-        //galeria.setOnClickListener(this);
-
-/*
-        Button camera = (Button) view.findViewById(R.id.camera);
-        camera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                cAndv.dispatchTakePictureIntent();
-            }
-        });
-        Button video = (Button) view.findViewById(R.id.video);
-        video.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                cAndv.dispatchTakeVideoIntent();
-            }
-        });
-        */
         return view;
     }
     private void initializeMap() {
@@ -82,7 +47,6 @@ public class MainActivityFragment extends Fragment{
         if (locationProviders == null || locationProviders.equals("")) {
             GPSTracker gps = new GPSTracker(getContext());
             gps.showSettingsAlert();
-            map.invalidate();
         }
         map.setTileSource(TileSourceFactory.MAPNIK);
         map.setTilesScaledToDpi(true);
